@@ -11,12 +11,12 @@ import java.util.List;
 
 @Service
 public class ScraperService {
-    private static final String SCRAPER_URL = "http://localhost:5000/api/products/scrape/man";
+    private static final String SCRAPER_URL = "http://localhost:5000/api/{marca}/products/scrape/{section}/{language}";
 
-    public List<Product> fetchProducts() {
+    public List<Product> fetchProducts(String section, String language, String marca) {
         System.out.println("------------------------Fetching products from scraper...");
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Product[]> response = restTemplate.getForEntity(SCRAPER_URL, Product[].class);
+        ResponseEntity<Product[]> response = restTemplate.postForEntity(SCRAPER_URL, null, Product[].class, marca, section, language);
         return Arrays.asList(response.getBody());
     }
 }

@@ -23,21 +23,47 @@ public class ProductController {
     @Autowired
 	private ProductService productService;
 
-    @GetMapping("/scrape/man")
-    public ResponseEntity<String> scrapeProducts() {
+    @PostMapping("/scrape/zara/man/es")
+    public ResponseEntity<String> scrapeProductsZaraMan() {
         System.out.println("--------------Scraping products...");
-        List<Product> products = scraperService.fetchProducts();
+        List<Product> products = scraperService.fetchProducts("man", "es", "zara");
         productService.setAllProduct(products);
         return ResponseEntity.ok("Scraping completed. " + products.size() + " products fetched.");
     }
 
-    @GetMapping("/all")
-    public List<Product> getProducts() {
-        return productService.getTask();
+    @PostMapping("/scrape/zara/woman/es")
+    public ResponseEntity<String> scrapeProductsZaraWoman() {
+        System.out.println("--------------Scraping products...");
+        List<Product> products = scraperService.fetchProducts("woman", "es", "zara");
+        productService.setAllProduct(products);
+        return ResponseEntity.ok("Scraping completed. " + products.size() + " products fetched.");
     }
 
-    @PostMapping("/add")
-    public Product addProduct(Product product) {
-        return productService.seProduct(product);
+    @PostMapping("/scrape/zara/kid/es")
+    public ResponseEntity<String> scrapeProductsZaraKid() {
+        System.out.println("--------------Scraping products...");
+        List<Product> products = scraperService.fetchProducts("kid", "es", "zara");
+        productService.setAllProduct(products);
+        return ResponseEntity.ok("Scraping completed. " + products.size() + " products fetched.");
     }
+
+    @GetMapping("/zara/man/es")
+    public List<Product> getProductsZaraMan() {
+        return productService.getTask("MAN", "es", "Zara");
+    }
+
+    @GetMapping("/zara/woman/es")
+    public List<Product> getProductsZaraWoman() {
+        return productService.getTask("WOMAN", "es", "Zara");
+    }
+
+    @GetMapping("/zara/kid/es")
+    public List<Product> getProductsZaraKid() {
+        return productService.getTask("KID", "es", "Zara");
+    }
+    @GetMapping("/all")
+    public List<Product> getAllProducts() {
+        return productService.getProducts();
+    }
+
 }
