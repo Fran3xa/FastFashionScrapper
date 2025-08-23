@@ -24,9 +24,25 @@ public class ProductController {
 	private ProductService productService;
 
     @GetMapping("/scrape/man")
-    public ResponseEntity<String> scrapeProducts() {
+    public ResponseEntity<String> scrapeProductsMan() {
         System.out.println("--------------Scraping products...");
-        List<Product> products = scraperService.fetchProducts();
+        List<Product> products = scraperService.fetchProducts("man");
+        productService.setAllProduct(products);
+        return ResponseEntity.ok("Scraping completed. " + products.size() + " products fetched.");
+    }
+
+    @GetMapping("/scrape/woman")
+    public ResponseEntity<String> scrapeProductsWoman() {
+        System.out.println("--------------Scraping products...");
+        List<Product> products = scraperService.fetchProducts("woman");
+        productService.setAllProduct(products);
+        return ResponseEntity.ok("Scraping completed. " + products.size() + " products fetched.");
+    }
+
+    @GetMapping("/scrape/kid")
+    public ResponseEntity<String> scrapeProductsKid() {
+        System.out.println("-Scraping products...");
+        List<Product> products = scraperService.fetchProducts("kid");
         productService.setAllProduct(products);
         return ResponseEntity.ok("Scraping completed. " + products.size() + " products fetched.");
     }

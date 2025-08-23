@@ -26,8 +26,10 @@ class ZaraScraper:
 
         try:
             self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)
+            print("ChromeDriver iniciado correctamente")
         except Exception as e:
             print("Error al iniciar ChromeDriver:", e)
+            self.driver = None
 
     def scrape(self,total_productos):
         productos = self.fetch_and_parse(total_productos)
@@ -39,6 +41,10 @@ class ZaraScraper:
         return productos
     
     def fetch_and_parse(self,total_productos):
+        if self.driver is None:
+            print("Error: Driver no está disponible")
+            return None
+            
         try:
             self.driver.get(self.url)
             time.sleep(5)
@@ -59,6 +65,9 @@ class ZaraScraper:
 
         
     def extraer_objetos(self):
+        if self.driver is None:
+            print("Error: Driver no está disponible para extraer objetos")
+            return []
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
         return soup.find_all("li", attrs={"data-productid": True})
     
@@ -101,6 +110,10 @@ class ZaraScraper:
     
 
     def scroll_to_bottom_with_lazy_loading(self, wait_time=2, max_retries=5):
+        if self.driver is None:
+            print("Error: Driver no está disponible para hacer scroll")
+            return
+            
         retries = 0
         last_height = self.scroll_height()
 
@@ -118,6 +131,8 @@ class ZaraScraper:
                 last_height = new_height
 
     def scroll_height(self):
+        if self.driver is None:
+            return 0
         return self.driver.execute_script("return document.body.scrollHeight")
 
     
@@ -139,5 +154,15 @@ class ZaraScraper:
             porcentaje = "NODISC"
         
         return precio_original, precio_desc, porcentaje
+    
+    def close(self):
+        """Cierra el driver de Selenium"""
+        if self.driver:
+            try:
+                self.driver.quit()
+            except Exception as e:
+                print(f"Error al cerrar el driver: {e}")
+            finally:
+                self.driver = None
     
         

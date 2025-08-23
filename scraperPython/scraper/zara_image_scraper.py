@@ -20,9 +20,9 @@ def scrape_color(product_dict):
         ref = product_dict['ref']
         driver.get(f"{ref}?v1={product_dict['productId']}")
         wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.CLASS_NAME, "product-color-extended-name")))
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "[class*='product-color-extended-name']")))
         soup = BeautifulSoup(driver.page_source, 'html.parser')
-        color_elements = soup.find_all("p", class_=re.compile(r"^product-color-extended-name"))
+        color_elements = soup.find_all("p", class_=re.compile(r".*product-color-extended-name.*"))
         if color_elements:
             color_text = color_elements[0].text.strip()
             color = color_text.split('|')[0].strip()
