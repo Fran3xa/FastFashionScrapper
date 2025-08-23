@@ -14,12 +14,12 @@ public class ProductService {
 	@Autowired
 	private IProductDao productDao;
 	
-	public List<Product> getTask(String section, String language, String marca) {
-		return (List<Product>) productDao.findByGeneroAndLanguageAndMarca(	section, language, marca);
+	public List<Product> getTask() {
+		return (List<Product>) productDao.findAll();
 	}
 
-	public List<Product> getProducts() {
-		return (List<Product>) productDao.findAll();
+	public Product seProduct(Product product) {
+		return productDao.save(product);
 	}
 
 	public Iterable<Product> setAllProduct(List<Product> product) {
